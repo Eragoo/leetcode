@@ -14,35 +14,21 @@ class Solution:
                 return mid
 
             # mid in left part
-            if start <= mid_e:
-                if target > mid_e:
+            if nums[start] <= mid_e:
+                if target > mid_e or target < nums[start]:
                     start = mid + 1
                 else:
-                    if target == nums[end]:
-                        return end
-                    if target < nums[end]:
-                        start = mid + 1
-                        end = end - 1
-                    if target > nums[end]:
-                        start = 0
-                        end = mid_e - 1
-
-                # mid in right part
-            else:
-                if target > mid_e:
-                    if target == nums[start]:
-                        return start
-                    if target > nums[start]:
-                        start = start + 1
-                        end = mid - 1
-                    else:
-                        start = mid + 1
-                        end = end
-                else:
                     end = mid - 1
+            # mid in right part
+            else:
+                if target < mid_e or target > nums[end]:
+                    end = mid - 1
+                elif target > mid_e:
+                    start = mid + 1
 
         return -1
 
 if __name__ == '__main__':
-    print(Solution().search([4, 5, 6, 7, 0, 1, 2], 0))
-    # print(Solution().search([2], 2))
+    print(Solution().search([4,5,6,7,0,1,2], 3))
+    print(Solution().search([1,3,5], 1))
+    print(Solution().search([5,1,3], 5))
