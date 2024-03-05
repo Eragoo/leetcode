@@ -1,24 +1,19 @@
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
-        w = 0
-        used = k
-        i = 0
-        best = 0
-        while i + w < len(s):
-            ch = s[i]
-            if ch == s[i + w]:
-                w += 1
-            elif used > 0:
-                used -= 1
-                w += 1
-            else:
-                used = k
-                if best < w:
-                    best = w
-                w = 1
-                i += 1
-        return max(best, w)
+        count = {}
+        res = 0
+        l = 0
 
+        for r in range(len(s)):
+            count[s[r]] = count.get(s[r], 0) + 1
+
+            if (r - l + 1) - max(count.values()) <= k:
+                res = max(res, r - l + 1)
+            else:
+                count[s[l]] = count.get(s[l], 0) - 1
+                l += 1
+
+        return res
 
 def test(s, k, expected):
     r = Solution().characterReplacement(s, k)
@@ -28,8 +23,9 @@ def test(s, k, expected):
 
 
 if __name__ == '__main__':
-    # test("ABAB", 2, 4)
-    # test("AABABBA", 1, 4)
-    # test("AACCA", 1, 3)
+    test("ABAB", 2, 4)
+    test("AABABBA", 1, 4)
+    test("AACCA", 1, 3)
     # не міняє перший елемент, треба походу йти з центру
     test("ABBB", 2, 4)
+    test("ABAA", 0, 2)
